@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import { Helmet } from 'react-helmet';
 import {Header, Titulo, ContenedorHeader, ContenedorBotones} from './elementos/Header';
@@ -16,7 +17,7 @@ const App = () => {
           <ContenedorBotones>
             <Boton to="/categorias">Categorias</Boton>
             <Boton to="/lista">Listas de Gastos</Boton>
-            <Boton >X</Boton>
+            <Boton to="/">X</Boton>
           </ContenedorBotones>
         </ContenedorHeader>
       </Header>

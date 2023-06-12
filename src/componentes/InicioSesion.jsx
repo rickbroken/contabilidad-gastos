@@ -38,7 +38,7 @@ const InicioSesion = () => {
           placeholder='Contraseña'
         />
         <ContenedorBoton>
-          <Boton primario as="button" type="submit">Iniciar Sesion</Boton>
+          <Boton primario="" as="button" type="submit">Iniciar Sesion</Boton>
         </ContenedorBoton>
       </Formulario>
     </>
