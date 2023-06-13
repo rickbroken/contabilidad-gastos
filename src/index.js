@@ -14,6 +14,7 @@ import GastosPorCategoria from './componentes/GastosPorCategoria';
 import favicon from './imagenes/logo.png';
 import Fondo from './elementos/Fondo';
 import { AuthProvider } from './contextos/AuthContext';
+import RutaPrivada from './componentes/RutaPrivada';
 
 
 WebFont.load({
@@ -36,12 +37,24 @@ const Index = () => {
           <Contenedor>
             <Routes>
               <Route path="*" element={<App />}/>
-              <Route path="/" element={<App />}/>
               <Route path="/iniciar-sesion" element={<InicioSesion/>}/>
               <Route path="/crear-cuenta" element={<RegistroUsuarios/>}/>
-              <Route path="/categorias" element={<GastosPorCategoria/>}/>
-              <Route path="/lista" element={<ListaDeGastos/>}/>
-              <Route path="/editar/:id" element={<EditarGastos/>}/>
+
+              <RutaPrivada path='/categorias'>
+                <GastosPorCategoria/>
+              </RutaPrivada>
+              
+              <RutaPrivada path='/lsita'>
+                <ListaDeGastos/>
+              </RutaPrivada>
+
+              <RutaPrivada path='/editar/:id'>
+                <EditarGastos/>
+              </RutaPrivada>
+
+              <RutaPrivada path='/'>
+                <App/>
+              </RutaPrivada>
             </Routes>
           </Contenedor>
         </BrowserRouter>
