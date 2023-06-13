@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { auth } from './../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import Alerta from '../elementos/Alerta';
 
 const Svg = styled(SvgLogin)`
   width: 100%;
@@ -20,6 +21,9 @@ const RegistroUsuarios = () => {
   const [correo, establecerCorreo] = useState('');
   const [password, establecerPassword] = useState('');
   const [password2, establecerPassword2] = useState('');
+  const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
+  const [alerta, cambiarAlerta] = useState({});
+  
 
   const handleChange = (e) => {
     switch(e.target.name){
@@ -39,37 +43,79 @@ const RegistroUsuarios = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    cambiarEstadoAlerta(false);
+    cambiarAlerta({});
 
     //Comprobamos que el correo sea valido
     const expresionRegular = /[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+/;
     if(!expresionRegular.test(correo)){
-      alert('Ingresa un correo valido');
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: 'error',
+        mensaje: 'Tienes un email invalido :('
+      });
       return;
     }
     if(correo === '' || password === '' || password2 === ''){
-      alert('Rellena todos los campos por favor');
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: 'error',
+        mensaje: 'Rellena todos los campos por favor :('
+      });
       return;
     }
     if(password !== password2){
-      alert('Las contraseñas no son iguales');
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: 'error',
+        mensaje: 'Las contraseñas no son iguales :('
+      });
       return;
     }
 
     try {
       await createUserWithEmailAndPassword(auth, correo, password);
-			alert('Registro de Usuario Correcto, Inicie sesion');
-			navigate('/iniciar-sesion');
+
+      cambiarEstadoAlerta(true);
+      cambiarAlerta({
+        tipo: 'exito',
+        mensaje: 'Registro de Usuario Correcto, Inicie sesion'
+      });
+      
+      setTimeout(()=>{
+        navigate('/iniciar-sesion');
+      },2500)
     } catch (error) {
+      cambiarEstadoAlerta(true);
       let mensaje;
-      console.log(error.code);
+
       switch (error.code) {
         case 'auth/invalid-password':
-          alert('La contraseña tine que ser de almenos 6 caracteres');
+          mensaje = 'La contraseña tine que ser de almenos 6 caracteres';
           break;
-      
+
+        case 'auth/weak-password':
+          mensaje = 'La contraseña es demasiado debil, agrega por lo menos una mayuscula simbolos o numeros :(';
+          break;
+
+        case 'auth/email-already-in-use':
+          mensaje = 'Este correo ya esta registrado :(';
+          break;
+
+        case 'auth/invalid-email':
+          mensaje = 'Tienes un email invalido';
+          break;
+
         default:
+          mensaje = 'Hubo algun error al intentar crear la cuenta :(';
           break;
       }
+
+      cambiarAlerta({
+        tipo: 'error',
+        mensaje: mensaje
+      });
+
     }    
 }
 
@@ -113,6 +159,13 @@ const RegistroUsuarios = () => {
           <Boton primario="" as="button" type="submit">Crear Cuenta</Boton>
         </ContenedorBoton>
       </Formulario>
+
+      <Alerta 
+        tipo={alerta.tipo}
+        mensaje={alerta.mensaje}
+        estadoAlerta={estadoAlerta}
+        cambiarEstadoAlerta={cambiarEstadoAlerta}
+      />
     </>
    );
 }
