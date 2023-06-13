@@ -1,17 +1,22 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contextos/AuthContext';
-import {Route, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-const RutaPrivada = ({children, ...restoDePropiedades}) => {
+const RutaProtegida = ({children}) => {
     const navigate = useNavigate();
     const {usuario} = useAuth();
+    const [data, setData] = useState('');
 
-    
-    if(usuario){
-        return <Route {...restoDePropiedades}>{children}</Route>
-    } else {
-        navigate('/');
-    }
+    useEffect(()=>{
+        if(usuario){
+            setData(children);
+        } else if(usuario === null || usuario === false) {
+            navigate('/iniciar-sesion');
+        }
+    },[usuario,children,navigate]);
+
+
+    return data;
 }
  
-export default RutaPrivada;
+export default RutaProtegida;

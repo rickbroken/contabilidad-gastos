@@ -36,25 +36,39 @@ const Index = () => {
         <BrowserRouter>
           <Contenedor>
             <Routes>
-              <Route path="*" element={<App />}/>
               <Route path="/iniciar-sesion" element={<InicioSesion/>}/>
               <Route path="/crear-cuenta" element={<RegistroUsuarios/>}/>
 
-              <RutaPrivada path='/categorias'>
-                <GastosPorCategoria/>
-              </RutaPrivada>
-              
-              <RutaPrivada path='/lsita'>
-                <ListaDeGastos/>
-              </RutaPrivada>
+              <Route path='*' element={
+                <RutaPrivada>
+                  <App />
+                </RutaPrivada>
+              } />
 
-              <RutaPrivada path='/editar/:id'>
-                <EditarGastos/>
-              </RutaPrivada>
 
-              <RutaPrivada path='/'>
-                <App/>
-              </RutaPrivada>
+              <Route path='/categorias' element={
+                <RutaPrivada>
+                  <GastosPorCategoria/>
+                </RutaPrivada>
+              } />
+
+              <Route path='/lista' element={
+                <RutaPrivada>
+                  <ListaDeGastos/>
+                </RutaPrivada>
+              } />
+
+              <Route path='/editar/:id' element={
+                <RutaPrivada>
+                  <EditarGastos/>
+                </RutaPrivada>
+              }/>
+
+              <Route path='/' element={
+                <RutaPrivada>
+                  <App/>
+                </RutaPrivada>
+              } />
             </Routes>
           </Contenedor>
         </BrowserRouter>
