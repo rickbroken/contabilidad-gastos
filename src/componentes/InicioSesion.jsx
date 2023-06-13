@@ -74,7 +74,6 @@ const InicioSesion = () => {
     } catch (error) {
       cambiarEstadoAlerta(true);
       let mensaje;
-      console.log(error.code);
 
       switch (error.code) {
         case 'auth/wrong-password':
