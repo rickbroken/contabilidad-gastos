@@ -116,7 +116,7 @@ const FormularioGasto = () => {
           type='text'
           name='cantidad'
           id='cantidad'
-          placeholder='%0.00'
+          placeholder='$0'
 					value={inputCantidad}
 					onChange={handleChange}
         />
