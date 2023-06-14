@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from './../theme';
 import { ReactComponent as IconoDown } from './../imagenes/down.svg';
+import IconoCategoria from '../elementos/IconoCategoria';
 
 const ContenedorSelect = styled.div`
     background: ${theme.grisClaro};
@@ -59,7 +60,7 @@ const Opcion = styled.div`
 `;
 
 
-const SelectCategorias = () => {
+const SelectCategorias = ({categoria, cambiarCategoria}) => {
     const [mostrarSelect, cambiarMostrarSelect] = useState(false);
 
     const categorias = [
@@ -73,15 +74,26 @@ const SelectCategorias = () => {
         {id: 'diversion', texto: 'Diversion'}
     ]
 
+    const handleClick = (e) => {
+        cambiarCategoria(e.currentTarget.dataset.valor);
+    }
+
 
     return ( 
         <ContenedorSelect onClick={()=> cambiarMostrarSelect(!mostrarSelect)}>
-            <OpcionSeleccionada>Hogar <IconoDown /></OpcionSeleccionada>
+            <OpcionSeleccionada>{categoria} <IconoDown /></OpcionSeleccionada>
 
             {mostrarSelect &&
                 <Opciones>
                     {categorias.map((categoria)=>(
-                        <Opcion key={categoria.id}>{categoria.texto}</Opcion>
+                        <Opcion 
+                            key={categoria.id}
+                            data-valor={categoria.id}
+                            onClick={handleClick}
+                        >
+                            <IconoCategoria id={categoria.id}/>
+                            {categoria.texto}
+                        </Opcion>
                     ))}
                 </Opciones>
             }
