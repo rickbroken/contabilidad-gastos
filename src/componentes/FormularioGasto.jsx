@@ -36,7 +36,7 @@ const FormularioGasto = () => {
     cambiarEstadoAlerta(false);
 
     
-    let cantidad = parseFloat(inputCantidad).toFixed(2);
+    let cantidad = parseFloat(inputCantidad);
 
     if(inputDescripcion === ''){
       cambiarEstadoAlerta(true);

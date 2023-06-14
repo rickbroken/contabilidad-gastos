@@ -69,7 +69,7 @@ const InicioSesion = () => {
       
       setTimeout(()=>{
         navigate('/');
-      },2500);
+      },1000);
 
     } catch (error) {
       cambiarEstadoAlerta(true);
