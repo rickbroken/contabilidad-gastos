@@ -26,10 +26,11 @@ import { Link } from 'react-router-dom';
 import Boton from '../elementos/Boton';
 import { format, fromUnixTime } from 'date-fns';
 import { es } from 'date-fns/locale';
+import borrarGasto from '../firebase/borrarGasto';
 
 const ListaDeGastos = () => {
 
-  const [gastos] = useObtenerGastos();
+  const {gastos, hayMasPorCargar, obtenerMasGastos} = useObtenerGastos();
 
   const formatearFecha = (fecha) => {
     return format(fromUnixTime(fecha),"dd 'de' MMMM 'de' yyyy", {locale: es})
@@ -47,7 +48,7 @@ const ListaDeGastos = () => {
       }
     }
   }
-  
+  console.log(hayMasPorCargar);
   return ( 
     <>
       <Helmet>
@@ -84,7 +85,7 @@ const ListaDeGastos = () => {
                 </BotonAccion>
 
                 <BotonAccion >
-                  <IconoBorrar />
+                  <IconoBorrar onClick={()=>borrarGasto(gasto.id)}/>
                 </BotonAccion>
               </ContenedorBotones>
             </ElementoLista>
@@ -92,7 +93,11 @@ const ListaDeGastos = () => {
         ))}
 
         <ContenedorBotonCentral>
-          <BotonCargarMas>Cargar Más</BotonCargarMas>
+          {hayMasPorCargar ?
+            <BotonCargarMas onClick={()=>obtenerMasGastos()}>Cargar Más</BotonCargarMas> 
+            :
+            <p>No hay mas Gastos :(</p> 
+          }
         </ContenedorBotonCentral>
 
         {gastos.length === 0 && 

@@ -88,7 +88,6 @@ const FormularioGasto = () => {
     }
 
 
-    console.log(cantidad);
   }
 
   return ( 
