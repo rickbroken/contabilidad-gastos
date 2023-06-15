@@ -36,7 +36,7 @@ const FormularioGasto = ({gasto, gastoId}) => {
         navigate('/lista');
       }
     }
-  },[gasto]);
+  },[gasto,navigate,usuario]);
   //console.log(gasto);
 
 

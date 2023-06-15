@@ -48,7 +48,6 @@ const ListaDeGastos = () => {
       }
     }
   }
-  console.log(hayMasPorCargar);
   return ( 
     <>
       <Helmet>

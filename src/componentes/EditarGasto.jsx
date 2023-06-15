@@ -10,9 +10,6 @@ const EditarGasto = () => {
 
   const {id} = useParams();
   const [gasto] = useObtenerGasto(id);
-
-  console.log(id);
-  
   
 
   return ( 
