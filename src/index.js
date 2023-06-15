@@ -15,6 +15,7 @@ import favicon from './imagenes/logo.png';
 import Fondo from './elementos/Fondo';
 import { AuthProvider } from './contextos/AuthContext';
 import RutaPrivada from './componentes/RutaPrivada';
+import { TotalGastadoProvider } from './contextos/TotalGastadoEnElMesContext';
 
 
 WebFont.load({
@@ -31,47 +32,48 @@ const Index = () => {
         <link rel="shorcut icon" href={favicon} type="image/x-icon" />
         <title>Contabilidad Gastos</title>
       </Helmet>
-
       <AuthProvider>
-        <BrowserRouter>
-          <Contenedor>
-            <Routes>
-              <Route path="/iniciar-sesion" element={<InicioSesion/>}/>
-              <Route path="/crear-cuenta" element={<RegistroUsuarios/>}/>
+        <TotalGastadoProvider>
+          <BrowserRouter>
+            <Contenedor>
+              <Routes>
+                <Route path="/iniciar-sesion" element={<InicioSesion/>}/>
+                <Route path="/crear-cuenta" element={<RegistroUsuarios/>}/>
 
-              <Route path='*' element={
-                <RutaPrivada>
-                  <App />
-                </RutaPrivada>
-              } />
+                <Route path='*' element={
+                  <RutaPrivada>
+                    <App />
+                  </RutaPrivada>
+                } />
 
 
-              <Route path='/categorias' element={
-                <RutaPrivada>
-                  <GastosPorCategoria/>
-                </RutaPrivada>
-              } />
+                <Route path='/categorias' element={
+                  <RutaPrivada>
+                    <GastosPorCategoria/>
+                  </RutaPrivada>
+                } />
 
-              <Route path='/lista' element={
-                <RutaPrivada>
-                  <ListaDeGastos/>
-                </RutaPrivada>
-              } />
+                <Route path='/lista' element={
+                  <RutaPrivada>
+                    <ListaDeGastos/>
+                  </RutaPrivada>
+                } />
 
-              <Route path='/editar/:id' element={
-                <RutaPrivada>
-                  <EditarGastos/>
-                </RutaPrivada>
-              }/>
+                <Route path='/editar/:id' element={
+                  <RutaPrivada>
+                    <EditarGastos/>
+                  </RutaPrivada>
+                }/>
 
-              <Route path='/' element={
-                <RutaPrivada>
-                  <App/>
-                </RutaPrivada>
-              } />
-            </Routes>
-          </Contenedor>
-        </BrowserRouter>
+                <Route path='/' element={
+                  <RutaPrivada>
+                    <App/>
+                  </RutaPrivada>
+                } />
+              </Routes>
+            </Contenedor>
+          </BrowserRouter>
+        </TotalGastadoProvider>
       </AuthProvider>
 
 

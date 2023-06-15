@@ -7,9 +7,9 @@ import useObtenerGastosDelMes from '../hooks/useObtenerGastosDelMes';
 
 
 const GastosPorCategoria = () => {
-  const [gastos] = useObtenerGastosDelMes();
+  const gastos = useObtenerGastosDelMes();
 
-  console.log(gastos);
+  //console.log(gastos);
   return ( 
     <>
       <Helmet>
