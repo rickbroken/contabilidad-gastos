@@ -20,7 +20,6 @@ const TotalGastadoProvider = ({children}) => {
         }
 
         cambiarTotal(acumulado);
-        console.log(acumulado);
         
     },[gastos])
 

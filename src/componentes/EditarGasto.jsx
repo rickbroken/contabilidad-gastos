@@ -5,6 +5,7 @@ import useObtenerGasto from '../hooks/useObtenerGasto';
 import { Helmet } from 'react-helmet';
 import {Header, Titulo} from './../elementos/Header';
 import BtnRegresar from '../elementos/BtnRegresar';
+import BarraTotalGastado from './BarraTotalGastado';
 
 const EditarGasto = () => {
 
@@ -22,7 +23,10 @@ const EditarGasto = () => {
         <BtnRegresar ruta='/lista/' />
         <Titulo>Editar Gasto</Titulo>
       </Header>
+
       <FormularioGasto gasto={gasto} gastoId={id}/>
+
+      <BarraTotalGastado />
     </>
    );
 }
