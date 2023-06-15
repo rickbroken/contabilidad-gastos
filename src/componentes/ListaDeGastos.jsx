@@ -80,7 +80,7 @@ const ListaDeGastos = () => {
               </Valor>
 
               <ContenedorBotones>
-                <BotonAccion to={`/editar/id:${gasto.id}`} as={Link}>
+                <BotonAccion to={`/editar/${gasto.id}`} as={Link}>
                   <IconoEditar />
                 </BotonAccion>
 

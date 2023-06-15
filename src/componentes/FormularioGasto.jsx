@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ContenedorFiltros, Formulario, Input, InputGrande, ContenedorBoton} from './../elementos/ElementosDeFormulario';
 import Boton from '../elementos/Boton';
 import { ReactComponent as IconoPlus } from './../imagenes/plus.svg';
@@ -6,11 +6,13 @@ import SelectCategorias from './SelectCategorias';
 import DatePicker from './DatePicker';
 import agregarGasto from '../firebase/agregarGasto';
 import getUnixTime from 'date-fns/getUnixTime';
-//import fromUnixTime from 'date-fns/fromUnixTime';
+import fromUnixTime from 'date-fns/fromUnixTime';
 import {useAuth} from './../contextos/AuthContext';
 import Alerta from './../elementos/Alerta';
+import { useNavigate } from 'react-router-dom';
+import editarGasto from './../firebase/editarGasto';
 
-const FormularioGasto = () => {
+const FormularioGasto = ({gasto, gastoId}) => {
 
 	const [inputDescripcion, cambiarInputDescripcion] = useState('');
 	const [inputCantidad, cambiarInputCantidad] = useState('');
@@ -18,9 +20,24 @@ const FormularioGasto = () => {
   const {usuario} = useAuth();
   const [alerta, cambiarAlerta] = useState({});
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
+  const navigate = useNavigate();
 
   const [fecha, cambiarFecha] = useState(new Date());
 
+  //Efecto para editar el gasto, comprobando si hay un gasto
+  useEffect(()=>{
+    if(gasto){
+      if(gasto.uidUsuario === usuario.uid){
+        cambiarInputCantidad(gasto.cantidad);
+        cambiarCategoria(gasto.categoria);
+        cambiarFecha(fromUnixTime(gasto.fecha));
+        cambiarInputDescripcion(gasto.descripcion);
+      } else {
+        navigate('/lista');
+      }
+    }
+  },[gasto]);
+  //console.log(gasto);
 
 
 	const handleChange = (e) => {
@@ -53,37 +70,61 @@ const FormularioGasto = () => {
       });
       return;
     } else if(inputCantidad !== '' && inputDescripcion !== ''){
-      try {
-        if(cantidad){
-          await agregarGasto({
-              categoria: categoria,
-              descripcion: inputDescripcion,
-              cantidad: cantidad,
-              fecha: getUnixTime(fecha),
-              uidUsuario: usuario.uid
+      if(gasto){
+        console.log(gasto.id);
+        editarGasto({
+          id: gastoId,
+          categoria: categoria,
+          descripcion: inputDescripcion,
+          cantidad: cantidad,
+          fecha: getUnixTime(fecha)
+        });
+
+          cambiarEstadoAlerta(true);
+          cambiarAlerta({
+            tipo: 'exito',
+            mensaje: 'Gasto Editado ;)'
+          });
+
+          setTimeout(()=>{
+            if(gasto){
+              navigate('/lista');
             }
-          );
+          },1000)
+      } else {
+        try {
+          if(cantidad){
+            await agregarGasto({
+                categoria: categoria,
+                descripcion: inputDescripcion,
+                cantidad: cantidad,
+                fecha: getUnixTime(fecha),
+                uidUsuario: usuario.uid
+              }
+            );
+          }
+          
+          cambiarFecha(new Date());
+          cambiarInputCantidad('');
+          cambiarCategoria('hogar');
+          cambiarInputCantidad('');
+          cambiarInputDescripcion('');
+  
+          
+          cambiarEstadoAlerta(true);
+          cambiarAlerta({
+            tipo: 'exito',
+            mensaje: 'Gasto Agregado ;)'
+          });
+  
+        } catch (error) {
+          console.log(error);
+          cambiarEstadoAlerta(true);
+          cambiarAlerta({
+            tipo: 'error',
+            mensaje: 'Hubo un error al intentar enviar tu gasto :('
+          });
         }
-        
-        cambiarFecha(new Date());
-        cambiarInputCantidad('');
-        cambiarCategoria('hogar');
-        cambiarInputCantidad('');
-        cambiarInputDescripcion('');
-
-
-        cambiarEstadoAlerta(true);
-        cambiarAlerta({
-          tipo: 'exito',
-          mensaje: 'Gasto Agregado ;)'
-        });
-      } catch (error) {
-        console.log(error);
-        cambiarEstadoAlerta(true);
-        cambiarAlerta({
-          tipo: 'error',
-          mensaje: 'Hubo un error al intentar enviar tu gasto :('
-        });
       }
     }
 
@@ -121,14 +162,25 @@ const FormularioGasto = () => {
         />
       </div>
       <ContenedorBoton>
-        <Boton 
-          as='button' 
-          primario='' 
-          con=''
-          type='submit'
-        >
-          Agregar Gasto <IconoPlus />
-        </Boton>
+        {gasto ? 
+          <Boton 
+            as='button' 
+            primario='' 
+            con=''
+            type='submit'
+          >
+            Actualizar Gasto
+          </Boton>
+          :
+          <Boton 
+            as='button' 
+            primario='' 
+            con=''
+            type='submit'
+          >
+            Agregar Gasto <IconoPlus />
+          </Boton>
+        }
       </ContenedorBoton>
 
       <Alerta  

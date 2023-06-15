@@ -1,8 +1,32 @@
 import React from 'react';
+import FormularioGasto from './FormularioGasto';
+import { useParams } from 'react-router-dom';
+import useObtenerGasto from '../hooks/useObtenerGasto';
+import { Helmet } from 'react-helmet';
+import {Header, Titulo} from './../elementos/Header';
+import BtnRegresar from '../elementos/BtnRegresar';
 
 const EditarGasto = () => {
+
+  const {id} = useParams();
+  const [gasto] = useObtenerGasto(id);
+
+  console.log(id);
+  
+  
+
   return ( 
-    <h1>Editar Gastos</h1>
+    <>
+      <Helmet>
+        <title>Editar Gasto</title>
+      </Helmet>
+
+      <Header>
+        <BtnRegresar ruta='/lista/' />
+        <Titulo>Editar Gasto</Titulo>
+      </Header>
+      <FormularioGasto gasto={gasto} gastoId={id}/>
+    </>
    );
 }
  
