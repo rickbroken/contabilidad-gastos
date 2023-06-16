@@ -11,6 +11,7 @@ import {useAuth} from './../contextos/AuthContext';
 import Alerta from './../elementos/Alerta';
 import { useNavigate } from 'react-router-dom';
 import editarGasto from './../firebase/editarGasto';
+import convertirAMoneda from './../funciones/convertirAMoneda';
 
 const FormularioGasto = ({gasto, gastoId}) => {
 
@@ -44,7 +45,7 @@ const FormularioGasto = ({gasto, gastoId}) => {
 		if(e.target.name === 'descripcion'){
 			cambiarInputDescripcion(e.target.value);
 		} else if(e.target.name === 'cantidad'){
-			cambiarInputCantidad(e.target.value.replace(/[^0-9.]/g, ''));
+			cambiarInputCantidad(convertirAMoneda(e.target.value.replace(/[^0-9.]/g, '')));
 		}
 	}
 
