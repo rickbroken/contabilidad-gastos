@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Header, Titulo } from './../elementos/Header';
 import Boton from '../elementos/Boton';
@@ -9,6 +9,7 @@ import { auth } from './../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Alerta from '../elementos/Alerta';
+import { useAuth } from '../contextos/AuthContext';
 
 const Svg = styled(SvgLogin)`
   width: 100%;
@@ -23,6 +24,15 @@ const RegistroUsuarios = () => {
   const [password2, establecerPassword2] = useState('');
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
+
+  const {usuario} = useAuth();
+
+  
+  useEffect(()=>{
+    if(usuario !== null){
+      navigate('/');
+    }
+  },[usuario, navigate])
   
 
   const handleChange = (e) => {

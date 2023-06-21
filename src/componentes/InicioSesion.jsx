@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Header, Titulo } from './../elementos/Header';
 import Boton from '../elementos/Boton';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from './../firebase/firebaseConfig';
 import Alerta from '../elementos/Alerta';
+import { useAuth } from '../contextos/AuthContext';
 
 
 const Svg = styled(SvgLogin)`
@@ -18,12 +19,20 @@ const Svg = styled(SvgLogin)`
 `;
 
 const InicioSesion = () => {
-
+  
   const navigate = useNavigate();
   const [correo, establecerCorreo] = useState('');
   const [password, establecerPassword] = useState('');
   const [estadoAlerta, cambiarEstadoAlerta] = useState(false);
   const [alerta, cambiarAlerta] = useState({});
+  
+  const {usuario} = useAuth();
+
+  useEffect(()=>{
+    if(usuario !== null){
+      navigate('/');
+    }
+  },[usuario, navigate])
 
 
   const handleChange = (e) => {
